@@ -8,41 +8,41 @@
 #define bool int
 
 // estrutura do nó
-struct tNode
+struct treeNode
 {
     int key;
-    struct tNode *left;
-    struct tNode *right;
+    struct treeNode *left;
+    struct treeNode *right;
 };
 
-struct sNode
+struct stackNode
 {
-    struct tNode *t;
-    struct sNode *next;
+    struct treeNode *key;
+    struct stackNode *next;
 };
 
 float timedifference_msec(struct timeval t0, struct timeval t1){
     return (t1.tv_sec - t0.tv_sec) * 1000.0f + (t1.tv_usec - t0.tv_usec) / 1000.0f;
 }
 
-tNode *create_tree(){
-    tNode *node = NULL;
+treeNode *create_tree(){
+    treeNode *node = NULL;
     return node;
 }
 
 // create a new node
-tNode *create_node(int key)
+treeNode *create_node(int key)
 {
-    tNode *node = calloc(1, sizeof(tNode));
+    treeNode *node = calloc(1, sizeof(treeNode));
     node->key = key;
     node->left = node->right = NULL;
     return node;
 }
 
 // insert a new element
-tNode *insert(tNode *root, int key)
+treeNode *insert(treeNode *root, int key)
 { 
-     struct tNode **current = &root;
+     struct treeNode **current = &root;
     
     while (*current != NULL){
         if (key > (*current)->key){
@@ -57,17 +57,17 @@ tNode *insert(tNode *root, int key)
     return root;
 }
 
-void releaseTree(struct tNode *root){
+void releaseTree(struct treeNode *root){
     root = releaseNode(root, root->key);
 }
 
-tNode *releaseNode(struct tNode *root, int key)
+treeNode *releaseNode(struct treeNode *root, int key)
 {
-    struct tNode *current = root;
-    struct tNode *parent = NULL;
-    struct tNode *subTree = NULL;
-    struct sNode *s = NULL;
-    struct sNode *garbage = NULL;
+    struct treeNode *current = root;
+    struct treeNode *parent = NULL;
+    struct treeNode *subTree = NULL;
+    struct stackNode *stack = NULL;
+    struct stackNode *garbage = NULL;
     bool done = 0;
 
     while (current->key != key)
@@ -86,14 +86,14 @@ tNode *releaseNode(struct tNode *root, int key)
     {
         if (current != NULL)
         {
-            push(&s, current);
+            push(&stack, current);
             current = current->left;
         }
         else
         {
-            if (!isEmpty(s))
+            if (!isEmpty(stack))
             {
-                current = pop(&s);
+                current = pop(&stack);
                 push(&garbage, current);
                 current = current->right;
             }
@@ -133,54 +133,54 @@ tNode *releaseNode(struct tNode *root, int key)
     return root;
 }
 
-int amountNode(struct tNode *root)
+int amountNode(struct treeNode *root)
 {
-    struct tNode *current = root;
-    struct sNode *s = NULL;
+    struct treeNode *current = root;
+    struct stackNode *stack = NULL;
     bool done = 0;
-    int cont = 0;
+    int amountNode = 0;
 
     while (!done)
     {
         if (current != NULL)
         {
-            push(&s, current);
+            push(&stack, current);
             current = current->left;
         }
         else
         {
-            if (!isEmpty(s))
+            if (!isEmpty(stack))
             {
-                current = pop(&s);
-                cont++;
+                current = pop(&stack);
+                amountNode++;
                 current = current->right;
             }
             else
                 done = 1;
         }
     }
-    return cont;
+    return amountNode;
 }
 
 // print in order
-void inOrder(tNode *root)
+void inOrder(treeNode *root)
 {   
-    tNode *current = root;
-    sNode *s = NULL;
+    treeNode *current = root;
+    stackNode *stack = NULL;
     bool done = 0;
 
     while (!done)
     {
         if (current != NULL)
         {
-            push(&s, current);
+            push(&stack, current);
             current = current->left;
         }
         else
         {
-            if (!isEmpty(s))
+            if (!isEmpty(stack))
             {
-                current = pop(&s);
+                current = pop(&stack);
                 printf("%d -  ", current->key);
                 current = current->right;
             }
@@ -191,26 +191,24 @@ void inOrder(tNode *root)
 }
 
 // print in pos order
-void posOrder(tNode *root)
+void posOrder(treeNode *root)
 {
-    tNode *current = root;
-    sNode *s = NULL;
+    treeNode *current = root;
+    stackNode *stack = NULL;
     bool done = 0;
 
     while (!done)
     {
         if (current != NULL)
         {
-            push(&s, current);
-
+            push(&stack, current);
             current = current->right;
         }
         else
         {
-            if (!isEmpty(s))
+            if (!isEmpty(stack))
             {
-
-                current = pop(&s);
+                current = pop(&stack);
                 printf("%d -  ", current->key);
                 current = current->left;
             }
@@ -221,66 +219,64 @@ void posOrder(tNode *root)
 }
 
 // print in pre order
-void preOrder(tNode *root)
+void preOrder(treeNode *root)
 {
     if (root == NULL)
         return;
 
-    tNode *current = root;
-    sNode *st = NULL;
+    treeNode *current = root;
+    stackNode *stack = NULL;
 
-    while (!isEmpty(st) || current != NULL)
+    while (!isEmpty(stack) || current != NULL)
     {
         while (current != NULL)
         {
             printf("%d -  ", current->key);
             if (current->right)
-                push(&st, current->right);
+                push(&stack, current->right);
             current = current->left;
         }
-        if (!isEmpty(st))
-            current = pop(&st);
+        if (!isEmpty(stack))
+            current = pop(&stack);
     }
 }
 
 // Stach methods
-void push(sNode **top_ref, tNode *t)
+void push(stackNode **top_ref, treeNode *key)
 {
 
-    sNode *new_tNode = (sNode *)malloc(sizeof(sNode));
+    stackNode *new = (stackNode *)malloc(sizeof(stackNode));
 
-    if (new_tNode == NULL)
+    if (new == NULL)
     {
         printf("Stack Overflow!! \n");
-        getchar();
         exit(0);
     }
 
-    new_tNode->t = t;
-    new_tNode->next = (*top_ref);
-    (*top_ref) = new_tNode;
+    new->key = key;
+    new->next = (*top_ref);
+    (*top_ref) = new;
 }
 
-bool isEmpty(sNode *top)
+bool isEmpty(stackNode *top)
 {
     return (top == NULL) ? 1 : 0;
 }
 
-tNode *pop(sNode **top_ref)
+treeNode *pop(stackNode **top_ref)
 {
-    tNode *element;
-    sNode *top;
+    treeNode *element;
+    stackNode *top;
 
     if (isEmpty(*top_ref))
     {
         printf("Stack Underflow \n");
-        getchar();
         exit(0);
     }
     else
     {
         top = *top_ref;
-        element = top->t;
+        element = top->key;
         *top_ref = top->next;
         free(top);
         return element;

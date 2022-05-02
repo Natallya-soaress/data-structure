@@ -16,7 +16,7 @@ int main(){
 
 */
 
-tNode *root = create_tree();
+treeNode *root = create_tree();
 root = insert(root, 25);
 root = insert(root, 28);
 root = insert(root, 20);
@@ -52,7 +52,7 @@ Testes de tempo
    int N = 100001;
    int *dados =(int*) malloc(sizeof(int)*N);
 
-   tNode *root = create_tree();
+   treeNode *root = create_tree();
    
 
    srand(time(NULL));

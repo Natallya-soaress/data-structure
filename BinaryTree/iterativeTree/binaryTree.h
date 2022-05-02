@@ -1,16 +1,15 @@
-typedef struct sNode sNode;
-typedef struct tNode tNode;
+typedef struct stackNode stackNode;
+typedef struct treeNode treeNode;
 
-void push(struct sNode **top_ref, struct tNode *t);
-tNode *pop(struct sNode **top_ref);
-//bool isEmpty(struct sNode *top);
+void push(struct stackNode **top_ref, struct treeNode *t);
+treeNode *pop(struct stackNode **top_ref);
+//bool isEmpty(struct stackNode *top);
 
-tNode *create_node(int key);
-tNode *insert(struct tNode *root, int key);
-int isLeaf(struct tNode *node);
-tNode *releaseNode(struct tNode *root, int key);
-void inOrder(struct tNode *root);
-void posOrder(struct tNode *root);
-void preOrder(struct tNode *root);
+treeNode *create_node(int key);
+treeNode *insert(struct treeNode *root, int key);
+treeNode *releaseNode(treeNode *root, int key);
+void inOrder(struct treeNode *root);
+void posOrder(struct treeNode *root);
+void preOrder(struct treeNode *root);
 
 
