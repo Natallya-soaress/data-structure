@@ -39,46 +39,12 @@ tNode *create_node(int key)
     return node;
 }
 
-tNode *insertt(struct tNode **root, int key){
-    if(root == NULL)
-        return;
-    tNode* new;
-    new = create_node(key);
-    if(*root == NULL)
-       *root = new;
-    else{
-        struct tNode* current = root;
-        struct tNode* past = NULL;
-        while(current != NULL){
-            past = current;
-            if(key == current->key){
-                free(new);
-                return;
-            }
-
-            if(key > current->key)
-                current = current->right;
-            else
-                current = current->left;
-        }
-        if(key > past->key)
-            past->right = new;
-        else
-            past->left = new;
-    }
-    return root;
-}
-
 // insert a new element
 tNode *insert(tNode *root, int key)
 { 
      struct tNode **current = &root;
     
     while (*current != NULL){
-        if(key == (*current)->key){
-            printf("\nInvalid key [%d]\n ", key);
-            return root;
-        }
         if (key > (*current)->key){
             current = &(*current)->right;
         }
@@ -91,7 +57,11 @@ tNode *insert(tNode *root, int key)
     return root;
 }
 
-struct tNode *release(struct tNode *root, int key)
+void releaseTree(struct tNode *root){
+    root = releaseNode(root, root->key);
+}
+
+tNode *releaseNode(struct tNode *root, int key)
 {
     struct tNode *current = root;
     struct tNode *parent = NULL;

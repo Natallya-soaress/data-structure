@@ -9,7 +9,7 @@ int main(){
     struct timeval t0;
     struct timeval t1;
     float elapsed;
-    int N = 1000000;
+    int N = 100000;
     int *dados =(int*) malloc(sizeof(int)*N);
 
     srand(time(NULL));
@@ -21,7 +21,7 @@ int main(){
     
     
 
-    for(int i=0; i < N; i++)
+    for(int i=0; i < N; i++)    
         insere_ArvBin(raiz, dados[i]);
 
     
