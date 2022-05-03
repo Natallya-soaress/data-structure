@@ -23,12 +23,10 @@ int main(){
 
     for(int i=0; i < N; i++)    
         insere_ArvBin(raiz, dados[i]);
-
     
-    //libera_ArvBin(raiz);
 
     gettimeofday(&t0, 0);
-    preOrdem_ArvBin(raiz);
+    libera_ArvBin(raiz);
     gettimeofday(&t1, 0);
     
     elapsed = timedifference_msec(t0, t1);
