@@ -24,6 +24,7 @@ root = insert(root, 27);
 root = insert(root, 29);
 root = insert(root, 19);
 root = insert(root, 21);
+root = insert(root, 28);
 
 printf("\nPrint in order:\n");
 inOrder(root);

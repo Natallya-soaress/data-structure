@@ -45,6 +45,10 @@ treeNode *insert(treeNode *root, int key)
      struct treeNode **current = &root;
     
     while (*current != NULL){
+        if(key == (*current)->key){
+                printf("Invalid key [%d]", key);
+                return root;
+            }
         if (key > (*current)->key){
             current = &(*current)->right;
         }
@@ -250,7 +254,7 @@ void push(stackNode **top_ref, treeNode *key)
     if (new == NULL)
     {
         printf("Stack Overflow!! \n");
-        exit(0);
+        return;
     }
 
     new->key = key;
@@ -271,7 +275,7 @@ treeNode *pop(stackNode **top_ref)
     if (isEmpty(*top_ref))
     {
         printf("Stack Underflow \n");
-        exit(0);
+        return;
     }
     else
     {
