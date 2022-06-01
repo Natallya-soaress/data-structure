@@ -18,7 +18,7 @@ int main(){
 
 treeNode *root = create_tree();
 root = insert(root, 25);
-root = insert(root, 28);
+//root = insert(root, 28);
 root = insert(root, 20);
 root = insert(root, 27);
 root = insert(root, 29);
@@ -29,6 +29,13 @@ root = insert(root, 28);
 printf("\nPrint in order:\n");
 inOrder(root);
 
+int leafNode = amountLeafNode(root);
+printf("\n%d leaf nodes", leafNode);
+
+int noLeafNode = amountNoLeafNode(root);
+printf("\n%d no leaf nodes", noLeafNode);
+
+/*
 printf("\nPrint pos order:\n");
 posOrder(root);
 
@@ -40,12 +47,10 @@ root = releaseNode(root, 20);
 inOrder(root);
 
 printf("\nPrint after delete root: \n");
-releaseTree(root);
-
+releaseTree(root); */
 
 
 /*
-
 Testes de tempo
    struct timeval t0;
    struct timeval t1;

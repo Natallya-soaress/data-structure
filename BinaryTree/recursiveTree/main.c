@@ -5,34 +5,29 @@
 #include "ArvoreBinaria.c"
 
 int main(){
-
-    struct timeval t0;
-    struct timeval t1;
-    float elapsed;
-    int N = 100000;
-    int *dados =(int*) malloc(sizeof(int)*N);
-
-    srand(time(NULL));
-    for(int i = 0; i <=  N; i++){
-        dados[i] = (rand() % 1000000);
-    }    
     
     ArvBin* raiz = cria_ArvBin();
-    
+
+    insere_ArvBin(raiz, 25);
+    insere_ArvBin(raiz, 28);
+    insere_ArvBin(raiz, 27);
+    insere_ArvBin(raiz, 29);
+    insere_ArvBin(raiz, 20);
+    insere_ArvBin(raiz, 19);
+    insere_ArvBin(raiz, 21);
     
 
-    for(int i=0; i < N; i++)    
-        insere_ArvBin(raiz, dados[i]);
-    
+    emOrdem_ArvBin(raiz);
 
-    gettimeofday(&t0, 0);
-    libera_ArvBin(raiz);
-    gettimeofday(&t1, 0);
-    
-    elapsed = timedifference_msec(t0, t1);
+    //libera_NoPar(raiz);
 
     
 
-    printf("Code executed in %f milliseconds.\n", elapsed);
+    printf("\n%d", totalNoFolha_ArvBin(raiz));
+    //printf("\n%d", totalNoNaoFolha_ArvBin(raiz));
+    emOrdem_ArvBin(raiz);
+
+    //printf("\n%d", e_folha(raiz));
+
     return 0;
 }

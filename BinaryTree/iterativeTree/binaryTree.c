@@ -166,6 +166,76 @@ int amountNode(struct treeNode *root)
     return amountNode;
 }
 
+int amountLeafNode(struct treeNode *root)
+{
+    struct treeNode *current = root;
+    struct stackNode *stack = NULL;
+    bool done = 0;
+    int amount = 0;
+
+    while (!done)
+    {
+        if (current != NULL)
+        {
+            push(&stack, current);
+            current = current->left;
+        }
+        else
+        {
+            if (!isEmpty(stack))
+            {
+                current = pop(&stack);
+                if(isLeaf(current)){
+                    amount++;
+                    current = current->right;
+                } else {
+                    current = current->right;
+                }
+            }
+            else
+                done = 1;
+        }
+    }
+    return amount;
+}
+
+int amountNoLeafNode(struct treeNode *root)
+{
+    struct treeNode *current = root;
+    struct stackNode *stack = NULL;
+    bool done = 0;
+    int amount = 0;
+
+    while (!done)
+    {
+        if (current != NULL)
+        {
+            push(&stack, current);
+            current = current->left;
+        }
+        else
+        {
+            if (!isEmpty(stack))
+            {
+                current = pop(&stack);
+                if(!isLeaf(current)){
+                    amount++;
+                    current = current->right;
+                } else {
+                    current = current->right;
+                }
+            }
+            else
+                done = 1;
+        }
+    }
+    return amount;
+}
+
+int isLeaf(treeNode *node){
+    return ((node)->left == NULL && (node)->right == NULL) ? 1 : 0;
+}
+
 // print in order
 void inOrder(treeNode *root)
 {   

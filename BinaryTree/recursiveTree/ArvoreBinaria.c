@@ -30,6 +30,17 @@ void libera_NO(struct NO* no){
     no = NULL;
 }
 
+void libera_NoPar(struct NO* no){
+    if(no == NULL)
+        return;
+    if(no->info % 2 == 0){
+        free(no);
+        no = NULL;
+    }
+    libera_NO(no->esq);
+    libera_NO(no->dir);
+}
+
 void libera_ArvBin(ArvBin* raiz){
     if(raiz == NULL)
         return;
@@ -130,6 +141,12 @@ int estaVazia_ArvBin(ArvBin *raiz){
     return 0;
 }
 
+int e_folha(ArvBin *node){
+    if(((*node)->esq) == NULL && ((*node)->dir) == NULL)
+        return 1;
+    return 0;
+}
+
 int totalNO_ArvBin(ArvBin *raiz){
     if (raiz == NULL)
         return 0;
@@ -138,6 +155,36 @@ int totalNO_ArvBin(ArvBin *raiz){
     int alt_esq = totalNO_ArvBin(&((*raiz)->esq));
     int alt_dir = totalNO_ArvBin(&((*raiz)->dir));
     return(alt_esq + alt_dir + 1);
+}
+
+int totalNoFolha_ArvBin(ArvBin *raiz){
+    if(*raiz != NULL){
+        int n1 = totalNoFolha_ArvBin(&((*raiz)->esq));
+        int n2 = totalNoFolha_ArvBin(&((*raiz)->dir));
+        if(e_folha(raiz)){
+            return 1 + n1 + n2;
+        }  
+        else{
+            return n1 + n2;
+        }
+    }
+}
+
+int totalNoNaoFolha_ArvBin(ArvBin *raiz){
+    if(*raiz != NULL){
+        int n1 = totalNoFolha_ArvBin(&((*raiz)->esq));
+        int n2 = totalNoFolha_ArvBin(&((*raiz)->dir));
+        if(e_folha(raiz)){
+            return 0;
+        }  
+        else{
+            return max(n1, n2) + 1;
+        }
+    }
+}
+
+int max(int a, int b){
+    return a > b ? a : b;
 }
 
 int altura_ArvBin(ArvBin *raiz){
